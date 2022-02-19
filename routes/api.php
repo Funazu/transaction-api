@@ -26,3 +26,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::delete('/transaction/{id}', [TransactionController::class, 'destroy']);
 
 Route::resource('/transaction', TransactionController::class)->except(['create', 'edit']);
+
+Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
+Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/profile', function (Request $request) {
+        return auth()->user();
+    });
+
+    Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
+});
